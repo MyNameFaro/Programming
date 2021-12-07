@@ -1,24 +1,73 @@
 #include <bits/stdc++.h>
 using namespace std;
+using lli=long long;
 
 int main(){
 	int mod = 2553;
-	vector <int> hash[mod];
-	int memo[100003];
-	int A , B , C , D , E, F , G , H;
-	scanf("%d %d %d %d %d %d %d %d",&A ,&B ,&C ,&D ,&E ,&F ,&G ,&H);
-	memo[1] = A;
-	memo[2] = B;
-	memo[3] = C;
-	memo[4] = D;
-	for(int i = 5;i <= 10000;++i){
-		memo[i] = ((memo[i - 1] * E) % mod) + ((memo[i - 2] * F) % mod) + ((memo[i - 3] * G) % mod) + ((memo[i - 4] * H) % mod);
-		memo[i] %= mod;
-		hash[memo[i]].push_back(i);
+	int A ,B,C,D , E, F , G , H;
+	scanf("%d %d %d %d %d %d %d %d",&A,&B ,&C ,&D ,&E ,&F ,&G ,&H);
+	int mat[64][4][4];
+	mat[0][0][0]=E;
+	mat[0][0][1]=F;
+	mat[0][0][2]=G;
+	mat[0][0][3]=H;
+	mat[0][1][0]=mat[0][2][1]=mat[0][3][2]=1;
+	mat[0][1][1]=mat[0][1][2]=mat[0][1][3]=mat[0][2][0]=mat[0][2][3]=mat[0][2][2]=mat[0][3][3]=mat[0][3][1]=mat[0][3][0]=0;
+	for(int a=1;a<61;++a){
+		mat[a][0][0]=((mat[a-1][0][0]*mat[a-1][0][0])+(mat[a-1][0][1]*mat[a-1][1][0])+(mat[a-1][0][2]*mat[a-1][2][0])+(mat[a-1][0][3]*mat[a-1][3][0]))%2553;
+		mat[a][0][1]=((mat[a-1][0][0]*mat[a-1][0][1])+(mat[a-1][0][1]*mat[a-1][1][1])+(mat[a-1][0][2]*mat[a-1][2][1])+(mat[a-1][0][3]*mat[a-1][3][1]))%2553;
+		mat[a][0][2]=((mat[a-1][0][0]*mat[a-1][0][2])+(mat[a-1][0][1]*mat[a-1][1][2])+(mat[a-1][0][2]*mat[a-1][2][2])+(mat[a-1][0][3]*mat[a-1][3][2]))%2553;
+		mat[a][0][3]=((mat[a-1][0][0]*mat[a-1][0][3])+(mat[a-1][0][1]*mat[a-1][1][3])+(mat[a-1][0][2]*mat[a-1][2][3])+(mat[a-1][0][3]*mat[a-1][3][3]))%2553;
+		mat[a][1][0]=((mat[a-1][1][0]*mat[a-1][0][0])+(mat[a-1][1][1]*mat[a-1][1][0])+(mat[a-1][1][2]*mat[a-1][2][0])+(mat[a-1][1][3]*mat[a-1][3][0]))%2553;
+		mat[a][1][1]=((mat[a-1][1][0]*mat[a-1][0][1])+(mat[a-1][1][1]*mat[a-1][1][1])+(mat[a-1][1][2]*mat[a-1][2][1])+(mat[a-1][1][3]*mat[a-1][3][1]))%2553;
+		mat[a][1][2]=((mat[a-1][1][0]*mat[a-1][0][2])+(mat[a-1][1][1]*mat[a-1][1][2])+(mat[a-1][1][2]*mat[a-1][2][2])+(mat[a-1][1][3]*mat[a-1][3][2]))%2553;
+		mat[a][1][3]=((mat[a-1][1][0]*mat[a-1][0][3])+(mat[a-1][1][1]*mat[a-1][1][3])+(mat[a-1][1][2]*mat[a-1][2][3])+(mat[a-1][1][3]*mat[a-1][3][3]))%2553;
+		mat[a][2][0]=((mat[a-1][2][0]*mat[a-1][0][0])+(mat[a-1][2][1]*mat[a-1][1][0])+(mat[a-1][2][2]*mat[a-1][2][0])+(mat[a-1][2][3]*mat[a-1][3][0]))%2553;
+		mat[a][2][1]=((mat[a-1][2][0]*mat[a-1][0][1])+(mat[a-1][2][1]*mat[a-1][1][1])+(mat[a-1][2][2]*mat[a-1][2][1])+(mat[a-1][2][3]*mat[a-1][3][1]))%2553;
+		mat[a][2][2]=((mat[a-1][2][0]*mat[a-1][0][2])+(mat[a-1][2][1]*mat[a-1][1][2])+(mat[a-1][2][2]*mat[a-1][2][2])+(mat[a-1][2][3]*mat[a-1][3][2]))%2553;
+		mat[a][2][3]=((mat[a-1][2][0]*mat[a-1][0][3])+(mat[a-1][2][1]*mat[a-1][1][3])+(mat[a-1][2][2]*mat[a-1][2][3])+(mat[a-1][2][3]*mat[a-1][3][3]))%2553;
+		mat[a][3][0]=((mat[a-1][3][0]*mat[a-1][0][0])+(mat[a-1][3][1]*mat[a-1][1][0])+(mat[a-1][3][2]*mat[a-1][2][0])+(mat[a-1][3][3]*mat[a-1][3][0]))%2553;
+		mat[a][3][1]=((mat[a-1][3][0]*mat[a-1][0][1])+(mat[a-1][3][1]*mat[a-1][1][1])+(mat[a-1][3][2]*mat[a-1][2][1])+(mat[a-1][3][3]*mat[a-1][3][1]))%2553;
+		mat[a][3][2]=((mat[a-1][3][0]*mat[a-1][0][2])+(mat[a-1][3][1]*mat[a-1][1][2])+(mat[a-1][3][2]*mat[a-1][2][2])+(mat[a-1][3][3]*mat[a-1][3][2]))%2553;
+		mat[a][3][3]=((mat[a-1][3][0]*mat[a-1][0][3])+(mat[a-1][3][1]*mat[a-1][1][3])+(mat[a-1][3][2]*mat[a-1][2][3])+(mat[a-1][3][3]*mat[a-1][3][3]))%2553;
+		
+		/*for(int i=0;i<4;++i){
+			for(int j=0;j<4;++j){
+				mat[a][i][j]=((mat[a-1][i][0]*mat[a-1][0][j])+(mat[a-1][i][1]*mat[a-1][1][j])+(mat[a-1][i][2]*mat[a-1][2][j])+(mat[a-1][i][3]*mat[a-1][3][j]))%2553;
+			}
+		}*/
 	}
-	for(int i=0;i<2553;++i){
-		printf("i ::: \n");
-		for(auto v:hash[i]) cout << v << " ";
-		cout << "\n\n";
+	int Q;
+	scanf("%d",&Q);
+	while(Q--){
+		lli n;
+		int ans[102][4];
+		ans[0][0]=D;ans[0][1]=C;
+		ans[0][2]=B;ans[0][3]=A;
+		int cur=0;
+		scanf("%lld",&n);
+		if(n<=4){
+			printf("%d\n",ans[0][4-n]);
+			continue;
+		}
+		n-=4;
+		for(int a=60;a>=0;--a){
+			while(((lli) 1)<<a <= n){
+				++cur;
+				ans[cur][0]=((mat[a][0][0]*ans[cur-1][0])+(mat[a][0][1]*ans[cur-1][1])+(mat[a][0][2]*ans[cur-1][2])+(mat[a][0][3]*ans[cur-1][3]))%2553;
+				ans[cur][1]=((mat[a][1][0]*ans[cur-1][0])+(mat[a][1][1]*ans[cur-1][1])+(mat[a][1][2]*ans[cur-1][2])+(mat[a][1][3]*ans[cur-1][3]))%2553;
+				ans[cur][2]=((mat[a][2][0]*ans[cur-1][0])+(mat[a][2][1]*ans[cur-1][1])+(mat[a][2][2]*ans[cur-1][2])+(mat[a][2][3]*ans[cur-1][3]))%2553;
+				ans[cur][3]=((mat[a][3][0]*ans[cur-1][0])+(mat[a][3][1]*ans[cur-1][1])+(mat[a][3][2]*ans[cur-1][2])+(mat[a][3][3]*ans[cur-1][3]))%2553;
+				/*for(int i=0;i<4;++i){
+					ans[cur][i]=0;
+					for(int k=0;k<4;++k){
+						ans[cur][i]+=(mat[a][i][k]*ans[cur-1][k])%2553;
+					}
+					ans[cur][i]%=2553;
+				}*/
+				n-=((lli) 1)<<a;
+			}
+		}
+		printf("%d\n",ans[cur][0]);
 	}
 }

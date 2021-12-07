@@ -1,39 +1,46 @@
 #include<bits/stdc++.h>
 using namespace std;
-map<vector<int> , bool> cnt;
-int n;
-vector <int> s,v;
-int total=1;
-int solve(int x){
-	if(s.size()==n){
-		sort(s.begin(),s.end());
-		if(cnt.count(s)==0){
-			printf("%d : ",total+1);
-			for(auto y:s){
-				cout << y << ", ";
-			}
-			printf("\n");
-			cnt[s]=true;
-			++total;
-		}
-		
-		return 0;
-	}
-	if(x>11) return 0;
-	s.push_back(v[x]);
-	solve(x+1);
-	s.pop_back();
-	solve(x+1);
+int func(){
+    int n,m;
+    int ans=-2e9;
+    scanf("%d%d",&n,&m);
+    set <int> rr[n],cc[m];
+    for(int i=0;i<n;++i){
+        rr[i].insert(-1);
+        rr[i].insert(m);
+    }
+    for(int j=0;j<m;++j){
+        cc[j].insert(-1);
+        cc[j].insert(n);
+    }
+    for(int i=0;i<n;++i){
+        char s[m+1];
+        scanf("%s",s);
+        for(int j=0;j<m;++j){
+            if(s[j]=='0'){
+                rr[i].insert(j);
+                cc[j].insert(i);
+            }
+        }
+    }
+    
+   
+            int rmax=*lower_bound(rr[0].begin(),rr[0].end(),4);
+            int rmin=*upper_bound(rr[0].begin(),rr[0].end(),3);
+            int cmax=*lower_bound(cc[4].begin(),cc[4].end(),0);
+            int cmin=*upper_bound(cc[4].begin(),cc[4].end(),-1);
+
+		cout << rmin << " " << rmax << endl;
+		cout << cmin << " " << cmax << endl;
+
+        printf("\n");
+
+    return ans;
 }
 int main(){
-	v.push_back(0);
-	v.push_back(1);v.push_back(1);
-	v.push_back(5);v.push_back(5);v.push_back(5);v.push_back(5);
-	v.push_back(10);v.push_back(10);v.push_back(10);v.push_back(10);v.push_back(10);
-	printf("1 : EMPTY\n");
-	for(int i=1;i<=11;++i){
-		n=i;
-		solve(1);
-	}
-	cout << "TOTAL = "<< total;
+    int k;
+    scanf("%d",&k);
+    while(k--){
+        printf("%d\n",func());
+    }
 }
